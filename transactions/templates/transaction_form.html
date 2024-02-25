@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block head_title %}Transaction{% endblock %}  {% block content %}
+
+
+{%load crispy_forms_tags %}
+  
+  
+
+
+   
+    <div class="text-align-center m-5 pd-5 gap-5">
+        <form style="width: 700px; margin: auto;" method="post" class=" text-align-center m-5 pd-5 gap-5 bg-white shadow-md rounded px-6 pb-8 mb-4" style=" margin: auto;">
+            {% comment %} {%for field in form.visible_fields%} {% endcomment %}
+            <h2 class="font-bold text-blue text-center" >{{title}}</h2>   
+            {% csrf_token %}
+            {{ form | crispy}}
+            
+        {% if form.amont.errors %} {%for error in from.amount.errors%}
+        <p>{{error}}</p>
+        {%endfor%}{%endif%}
+        <button type="submit" class="btn btn-primary ml-5">Submit</button>    
+        </form>
+        
+    </div>
+    
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block head_title %}{{ title }}{% endblock %}
+{% block content %}
+
+<div class="my-10 py-3 px-4 bg-white rounded-xl shadow-md">
+    <h1 class="font-bold text-3xl text-center pb-5 pt-2">Transaction Report</h1>
+    
+    <table class="table bg-black">
+        <thead class="bg-blue-300">
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Transaction Type</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Book Title</th>
+                <th scope="col">Book Prize</th>
+                <th scope="col">Balance After Transaction</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in object_list %}
+            <tr>
+                <td>{{ transaction.timestamp|date:"F d, Y h:i A" }}</td>
+                <td>
+                    <span
+                    class="px-2 py-1 font-bold leading-tight rounded-sm {% if transaction.get_transaction_type_display == 'Withdraw' %} text-red-700 bg-red-100 {% else %} text-green-700 bg-green-100 {% endif %}"
+                  >
+                    {{ transaction.get_transaction_type_display }}
+                  </span>
+                </td>
+                <td>{{ transaction.amount }}</td>
+                <td>
+                    {% for book in transaction.books.all %}
+                        {{ book.title }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for book in transaction.books.all %}
+                        {{ book.prize }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ transaction.balance_afet_transaction }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h1 class="text-center text-bg-green-700 font-bold">Total balance: {{ request.user.account.balance }}</h1>
+</div>
+
+{% endblock %}

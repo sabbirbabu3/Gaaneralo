@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_title %}Ganner Alo{% endblock %} {% block content %} 
+<div id="carouselExample" class="carousel slide">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% static 'first.jpg' %}" class="d-block w-100" style="height: 500px;" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'second.jpg' %}" class="d-block w-100" style="height: 500px;" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'third.jpg' %}" class="d-block w-100" style="height: 500px;" alt="...">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
+  <div class="p-5 m-auto">
+    <h1>All of the categories</h1>
+    <div class="btn-group gap-4" role="group" aria-label="Basic radio toggle button group">
+      {% for cat in category %}
+      <input type="radio" class="btn-check" name="category" 
+      id="{{ cat.id }}" autocomplete="off" checked>
+      <label class="btn btn-outline-primary" for="{{ cat.id }}">
+        <a href="{% url 'category_wise_post' cat.slug %}" class="text-decoration-none text-dark">{{ cat.name }}</a>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+
+
+  <h1>Total Books: {{data | length}}</h1>
+<div class="d-flex flex-wrap align-content-center gap-5 m-5">
+  {%for post in data%}
+<div class="card " style="width: 18rem;">
+  <img src="{{post.image.url}}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Title: {{post.title}}</h5>
+    <h5 class="card-title">Prize: {{post.prize}}</h5>
+    <p class="card-text">Details: {{post.details|truncatewords:10}}</p>
+    <a href="{% url 'details' post.id %}" class="btn btn-primary">Details</a>
+  </div>
+</div>
+{%endfor%}
+
+</div>
+
+{% endblock%}

@@ -1,0 +1,62 @@
+{% extends 'base.html'%}
+
+{%load crispy_forms_tags %}
+{% block head_title %}Book Details{% endblock %} {% block content%}
+{% if user.is_authenticated%}
+<div class="card text-center" style="width: 600px; margin: auto;">
+    <div class="card-body">      
+        <img src="{{ books.image.url }}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">Title: {{ books.title }}</h5>
+            <p class="card-text">Details: {{ books.details }}</p>
+            <b><p class="card-text font-bold">Price: {{ books.prize }}$</p></b>
+            <form method="post" action="{% url 'make_transaction' book_id=books.id %}">
+                {% csrf_token %}
+                <button type="submit">Buy Now</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+{%else%}
+<div class="">
+    
+    
+    <div class="card" style="width: 600px;margin:auto;">
+        <img src="{{books.image.url}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Title: {{books.title}}</h5>
+          <p class="card-text">Price: {{books.prize}}$</p>
+          <p class="card-text">Details: {{ books.details }}</p>
+          <a href="{% url 'login'%}" class="btn btn-primary m-4">Buy Now</a>
+        </div>
+      </div>
+    
+</div>
+{%endif%}
+
+
+<div class="card" >
+    <div class="card-body">
+      Total comments: {{ comments | length }} 
+    </br>
+      Comments:
+      {% for comment in comments %}
+      <p style="margin-left:30px;">{{ comment.name }}: {{ comment.body }}  </p>
+      {{comment.created_on}}
+      {% endfor %}
+    </div>
+  </div>
+  
+  <form  method="post">
+    {% comment %} <h1 style="color: blue">This is post page</h1> {% endcomment %}
+    {% csrf_token %} {{ comments_form | crispy }}
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
+
+
+
+{%endblock%}
